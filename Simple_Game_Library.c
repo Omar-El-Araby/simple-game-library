@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <unistd.h>
 #define data "Data.txt"
 
 typedef struct game 
@@ -53,7 +54,8 @@ int main()
 	"Enter \"help\" to receive a list of valid commands!\nIf this is your first time running this program, please enter \"setup\".\n");
 	while(true)
 	{
-		readFile(data, lib, &n);
+		if(access(data, F_OK ) == 0)
+			readFile(data, lib, &n);
 		printf("@>>");
 		fgets(input, INT_MAX, stdin);
 		input[strcspn(input, "\n")] = 0;
