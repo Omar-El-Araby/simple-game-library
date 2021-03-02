@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <limits.h>
+#include <stdbool.h>
 #define data "Data.txt"
 
 typedef struct game 
@@ -33,10 +36,11 @@ void storer(char str[]);
 void spacer(char str[]);
 void searcher(char str[]);
 void sampler(game lib[], int *n);
-float pow(int a, int b);
+float power(int a, int b);
 float str_flt(char x[]);
 int chr_int(char x);
 int str_int(char x[]);
+char *strlwr(char *str);
 
 int main()
 {
@@ -51,7 +55,8 @@ int main()
 	{
 		readFile(data, lib, &n);
 		printf("@>>");
-		gets(input);
+		fgets(input, INT_MAX, stdin);
+		input[strcspn(input, "\n")] = 0;
 		searcher(input);
 		if(strcmp(input, "help") == 0) 
 		{
@@ -122,7 +127,8 @@ int main()
 		{
 			int x = 0;
 			printf("Please enter which field you wish to sort by.\nThe available fields are \"Name\", \"Genre\", \"Single/Multi\"(or \"sm\" for short),\nand \"Price\".\n");
-			gets(field);
+			fgets(field, INT_MAX, stdin);
+			field[strcspn(field, "\n")] = 0;
 			searcher(field);
 			if(strcmp(field, "name") == 0) gsortName(lib, n);
 			else if(strcmp(field, "genre") == 0) gsortGenre(lib, n);
@@ -140,7 +146,8 @@ int main()
 		else if(strcmp(input, "search") == 0)
 		{
 			printf("Please enter which field you wish to search in.\nThe available fields are \"Name\", \"Genre\", \"Single/Multi\"(or \"sm\" for short),\nand \"Price\".\n");
-			gets(field);
+			fgets(field, INT_MAX, stdin);
+			field[strcspn(field, "\n")] = 0;
 			int newflag = 0;
 			searcher(field);
 			if(strcmp(field, "name") == 0); else if(strcmp(field, "genre") == 0);
@@ -154,7 +161,11 @@ int main()
 					scanf("%f", &ptarget);
 					getchar();
 				}
-				else gets(target);
+				else 
+				{
+					fgets(target, INT_MAX, stdin);
+					target[strcspn(target, "\n")] = 0;
+				}
 			}
 			if(strcmp(field, "name") == 0) gsearchName(lib, n, target);
 			else if(strcmp(field, "genre") == 0) gsearchGenre(lib, n, target);
@@ -242,10 +253,14 @@ void gread(game lib[],int start, int n)
 	{
 		char tprice[10];
 		printf("Record #%d. Please enter the game's name, genre, price,\nand whether it's singleplayer or multiplayer:\n", i+1);
-		printf("Name: "); gets(lib[i].name); 
-		printf("Genre: "); gets(lib[i].genre); 
-		printf("Single/Multi: "); gets(lib[i].nplayers);
-		printf("Price: "); gets(tprice);
+		printf("Name: "); fgets(lib[i].name, INT_MAX, stdin); 
+		lib[i].name[strcspn(lib[i].name, "\n")] = 0;
+		printf("Genre: "); fgets(lib[i].genre, INT_MAX, stdin); 
+		lib[i].genre[strcspn(lib[i].genre, "\n")] = 0;
+		printf("Single/Multi: "); fgets(lib[i].nplayers, INT_MAX, stdin);
+		lib[i].nplayers[strcspn(lib[i].nplayers, "\n")] = 0;
+		printf("Price: "); fgets(tprice, INT_MAX, stdin);
+		tprice[strcspn(tprice, "\n")] = 0;
 		lib[i].price = str_flt(tprice);
 	}
 }
@@ -529,11 +544,11 @@ float str_flt(char x[])
 	{
 		for(int i = point - 1, j = 0; i >= 0; --i, ++j)
 		{
-			ans += pow(10, j) * chr_int(x[i]);
+			ans += power(10, j) * chr_int(x[i]);
 		}
 		for(int i = point+1, j = 1; i < 10; ++i, ++j)
 		{
-			ans += (1/(pow(10,j))) * chr_int(x[i]);
+			ans += (1/(power(10,j))) * chr_int(x[i]);
 		}
 	}
 	else return str_int(x);
@@ -543,7 +558,7 @@ float str_flt(char x[])
 int str_int(char x[])
 {
 	int ans = 0;
-	for(int i = 0; i < strlen(x); ++i) ans += pow(10, (strlen(x) - 1) - i) * chr_int(x[i]);
+	for(int i = 0; i < strlen(x); ++i) ans += power(10, (strlen(x) - 1) - i) * chr_int(x[i]);
 	return ans;
 }
 
@@ -564,7 +579,7 @@ int chr_int(char x)
 	}
 }
 
-float pow(int a, int b)
+float power(int a, int b)
 {
 	float ans = 1;
 	for(int i = 0; i < b; ++i)
@@ -574,3 +589,14 @@ float pow(int a, int b)
 	return ans;
 }
 
+char *strlwr(char *str)
+{
+  unsigned char *p = (unsigned char *)str;
+
+  while (*p) {
+     *p = tolower((unsigned char)*p);
+      p++;
+  }
+
+  return str;
+}
