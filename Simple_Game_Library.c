@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <unistd.h>
 #define data "Data.txt"
@@ -57,7 +56,7 @@ int main()
 		if(access(data, F_OK ) == 0)
 			readFile(data, lib, &n);
 		printf("@>>");
-		fgets(input, INT_MAX, stdin);
+		fgets(input, 40, stdin);
 		input[strcspn(input, "\n")] = 0;
 		searcher(input);
 		if(strcmp(input, "help") == 0) 
@@ -129,7 +128,7 @@ int main()
 		{
 			int x = 0;
 			printf("Please enter which field you wish to sort by.\nThe available fields are \"Name\", \"Genre\", \"Single/Multi\"(or \"sm\" for short),\nand \"Price\".\n");
-			fgets(field, INT_MAX, stdin);
+			fgets(field, 40, stdin);
 			field[strcspn(field, "\n")] = 0;
 			searcher(field);
 			if(strcmp(field, "name") == 0) gsortName(lib, n);
@@ -148,7 +147,7 @@ int main()
 		else if(strcmp(input, "search") == 0)
 		{
 			printf("Please enter which field you wish to search in.\nThe available fields are \"Name\", \"Genre\", \"Single/Multi\"(or \"sm\" for short),\nand \"Price\".\n");
-			fgets(field, INT_MAX, stdin);
+			fgets(field, 40, stdin);
 			field[strcspn(field, "\n")] = 0;
 			int newflag = 0;
 			searcher(field);
@@ -165,7 +164,7 @@ int main()
 				}
 				else 
 				{
-					fgets(target, INT_MAX, stdin);
+					fgets(target, 40, stdin);
 					target[strcspn(target, "\n")] = 0;
 				}
 			}
@@ -255,13 +254,13 @@ void gread(game lib[],int start, int n)
 	{
 		char tprice[10];
 		printf("Record #%d. Please enter the game's name, genre, price,\nand whether it's singleplayer or multiplayer:\n", i+1);
-		printf("Name: "); fgets(lib[i].name, INT_MAX, stdin); 
+		printf("Name: "); fgets(lib[i].name, 40, stdin); 
 		lib[i].name[strcspn(lib[i].name, "\n")] = 0;
-		printf("Genre: "); fgets(lib[i].genre, INT_MAX, stdin); 
+		printf("Genre: "); fgets(lib[i].genre, 40, stdin); 
 		lib[i].genre[strcspn(lib[i].genre, "\n")] = 0;
-		printf("Single/Multi: "); fgets(lib[i].nplayers, INT_MAX, stdin);
+		printf("Single/Multi: "); fgets(lib[i].nplayers, 40, stdin);
 		lib[i].nplayers[strcspn(lib[i].nplayers, "\n")] = 0;
-		printf("Price: "); fgets(tprice, INT_MAX, stdin);
+		printf("Price: "); fgets(tprice, 40, stdin);
 		tprice[strcspn(tprice, "\n")] = 0;
 		lib[i].price = str_flt(tprice);
 	}
