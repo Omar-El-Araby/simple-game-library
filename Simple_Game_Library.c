@@ -44,7 +44,7 @@ char *strlwr(char *str);
 
 int main()
 {
-	game lib[1000] = {};
+	game lib[1000] = {}; 
 	char input[10], field[10], target[30];
 	int qcounter = 0, qcounter2 = 0, index, n, appender;
 	float ptarget = 0;
@@ -53,13 +53,13 @@ int main()
 	"Enter \"help\" to receive a list of valid commands!\nIf this is your first time running this program, please enter \"setup\".\n");
 	while(true)
 	{
-		if(access(data, F_OK ) == 0)
-			readFile(data, lib, &n);
+		if(access(data, F_OK ) == 0) //Check that Data.txt exists.
+			readFile(data, lib, &n); //If the file exists, use it to fill the array.
 		printf("@>>");
 		fgets(input, 40, stdin);
 		input[strcspn(input, "\n")] = 0;
 		searcher(input);
-		if(strcmp(input, "help") == 0) 
+		if(strcmp(input, "help") == 0) //Print the help message.
 		{
 			printf("help    - receive a list of commands\nclr     - clears the console display\n"
 			"sample  - reset the library to its original size (5) and fill it with sample game titles\n"
@@ -69,20 +69,20 @@ int main()
 			"append+ - adds more than one record\nquit/q  - exit the program\n");
 			qcounter = 0;
 		}
-		else if(strcmp(input, "clr") == 0) system("cls");
-		else if(strcmp(input, "setup") == 0)
+		else if(strcmp(input, "clr") == 0) system("cls"); //Clear the screen.
+		else if(strcmp(input, "setup") == 0) //Make Data.txt.
 		{
 			sampler(lib, &n);
 			printf("\"Data.txt\" has been created. Setup complete!\n");
 			qcounter = 0;
 		}
-		else if(strcmp(input, "sample") == 0)
+		else if(strcmp(input, "sample") == 0) //Input sample.
 		{
 			sampler(lib, &n);
 			printf("Sample has been inputted.\n");
 			qcounter = 0;
 		}
-		else if(strcmp(input, "read") == 0)
+		else if(strcmp(input, "read") == 0) //Let user manually change records.
 		{
 			while(true)
 			{
@@ -124,7 +124,7 @@ int main()
 			}
 			qcounter = 0;
 		}
-		else if(strcmp(input, "sort") == 0)
+		else if(strcmp(input, "sort") == 0) //Sort.
 		{
 			int x = 0;
 			printf("Please enter which field you wish to sort by.\nThe available fields are \"Name\", \"Genre\", \"Single/Multi\"(or \"sm\" for short),\nand \"Price\".\n");
@@ -144,7 +144,7 @@ int main()
 			writeFile(data, lib, n);
 			qcounter = 0;
 		}
-		else if(strcmp(input, "search") == 0)
+		else if(strcmp(input, "search") == 0) //Let user find a specific record.
 		{
 			printf("Please enter which field you wish to search in.\nThe available fields are \"Name\", \"Genre\", \"Single/Multi\"(or \"sm\" for short),\nand \"Price\".\n");
 			fgets(field, 40, stdin);
@@ -175,14 +175,14 @@ int main()
 			else printf("Invalid input. Returning to main menu.\n");
 			qcounter = 0;
 		}
-		else if(strcmp(input, "append") == 0) 
+		else if(strcmp(input, "append") == 0) //Add a new record.
 		{
 			++n;
 			gread(lib, n-1, n);
 			writeFile(data, lib, n);
 			qcounter = 0;
 		}
-		else if(strcmp(input, "append+") == 0)
+		else if(strcmp(input, "append+") == 0) //Add several new records.
 		{
 			printf("Enter the number of records you wish to add:\n");
 			scanf("%d", &appender);
@@ -193,7 +193,7 @@ int main()
 			writeFile(data, lib, n);
 			qcounter = 0;
 		}
-		else if(strcmp(input, "credits") == 0)
+		else if(strcmp(input, "credits") == 0) //Print credits message.
 		{
 			printf("\nBelow is a list of the people I'd like to thank, for this project would\nnot exist without them.\n"
 			"Dr. Marwa El Shenawy - For being the person\nwho requested this in the first place\n"
@@ -211,7 +211,7 @@ int main()
 			"Walid Kamal - For consistently being able to make me panic over nothing\n\n");
 			qcounter = 0;
 		}
-		else if(strcmp(input, "info") == 0)
+		else if(strcmp(input, "info") == 0) //Print info message.
 		{
 			printf("Name: Omar Mostafa Morsi Mostafa El Araby\nRegistration Number: 18100410\n"
 			"Term: 3\nClass: E\nLikes:\n"
@@ -229,21 +229,21 @@ int main()
 			"and finally I like watching movies and TV shows. Only if they're good though.\n");
 			qcounter = 0;
 		}
-		else if(strcmp(input, "display") == 0)
+		else if(strcmp(input, "display") == 0) //Display everything.
 		{
 			displaybeg();
 			display(lib, 0, n);
 			displayend();
 			qcounter = 0;
 		}
-		else if(strcmp(input, "quit") == 0 || strcmp(input, "q") == 0) break;
+		else if(strcmp(input, "quit") == 0 || strcmp(input, "q") == 0) break; //Exit.
 		else 
 		{
-			++qcounter;
-			if(qcounter == 3) break;
+			++qcounter;				//Quit counter incremends with every invalid input and resets with every valid input.
+			if(qcounter == 3) break;	//Once it reaches 3 invalid inputs the program stops.
 			printf("Invalid input. Enter \"help\" to receive a list of commands.\n");
 		}
-		if(qcounter == 2) printf("WARNING!! One more invalid input will cause the program to shut down!\n");
+		if(qcounter == 2) printf("WARNING!! One more invalid input will cause the program to shut down!\n");	//Warning.
 	}
 	return 0;
 }
